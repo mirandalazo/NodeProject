@@ -5,12 +5,13 @@ const isAdmin = (req, res, next) => {
     if (isAdminVal) {
         return next();
     }
-    return res.send('Unauth');
+    return res.status(300).send('Unauth');
 
 };
 
 const getUsers = (req, res, next) => {
-    User.find((err, result) => {
+    const filter = req.query || {};
+    User.find({"details.role": filter.role}, (err, result) => {
         if (err) {
             return res.json(err);
         }
@@ -48,10 +49,18 @@ const putUser = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-    const user = new User(req.body);
+
+    const createUser = req.body;
+    // createUser.details = JSON.parse(createUser.details);  does not work if details doesn't exist
+    // createUser.documents = JSON.parse(createUser.documents);
+
+    const user = new User(createUser);
+
     user.save((err, result) => {
         if (err) {
-            return res.json(err);
+           // return res.json(err);
+            err.statusCode = 409;
+            return next(err);
         }
         //return res.json(result);
         req.resources.savedUser = result;

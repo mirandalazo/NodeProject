@@ -17,7 +17,7 @@ router.get('/users/:id',
     );
 
 router.post('/users',
-    // usersController.isAdmin,
+     usersController.isAdmin,
     // usersController.postUser,
     usersController.getUsers,
     usersController.createUser,

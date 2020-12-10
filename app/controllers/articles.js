@@ -3,13 +3,14 @@
 const Article = require('../models/articles');
 
 const getArticles = (req, res, next) => {
-    Article.find((err, result) => {
-        if (err) {
-            return res.json(err);
-        }
-        req.resources.articles = result;
-        return next();
-    })
+    Article.find().sort({title: 1}).populate('userArticle', 'email name details.age')  //get user data, all or only email/name = JOIN
+        .exec((err, result) => {
+            if (err) {
+                return res.json(err);
+            }
+            req.resources.articles = result;
+            return next();
+        })
 };
 
 const getArticleById = (req, res, next) => {
@@ -51,6 +52,8 @@ const deleteArticle = (req, res, next) => {
         return res.json(result);
     })
 };
+
+//req.query : ?isActive=true => req.query = {isActive: 'true'}
 
 
 module.exports = {

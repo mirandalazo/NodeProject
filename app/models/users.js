@@ -13,7 +13,30 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    isActive: {
+        type: Boolean
+    },
+    details: {
+        age: {
+            type: Number
+        },
+        role: {
+            type: String
+        }
+    },
+    documents: [
+        {
+            name: {
+                type: String
+            },
+            docType: {
+                type: String
+            }
+
+        }
+    ]
+
 });
 
 //denumire model, schema, denumire tabel

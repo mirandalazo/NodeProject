@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.ObjectId;
 
 const articleSchema = new Schema({
         title: {
@@ -13,6 +14,11 @@ const articleSchema = new Schema({
             type: Date,
             required: true,
             unique: false
+        },
+        userArticle: {
+            type: ObjectId,
+            ref: 'user',
+            required: true
         }
     }, {
         timestamps: () => new Date().getTime()
